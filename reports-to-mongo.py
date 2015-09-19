@@ -67,9 +67,10 @@ def fetch_yaml_report(s3, bucket, filename, keys):
             gzipped_yaml = k.get_contents_as_string()
 
             # Decompress YAMLOO and convert to JSON
-            report = yaml.SafeLoader(zlib.decompress(bytes(gzipped_yaml), 15+32))
-            while report.check_data():
-                print(report.data())
+            reports = yaml.safe_load_all(zlib.decompress(bytes(gzipped_yaml), 15+32))
+            for report in reports:
+                print(report)
+
 
 if __name__ == "__main__":
     main()
